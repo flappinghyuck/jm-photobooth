@@ -242,15 +242,27 @@ function captureNextPhoto2() {
     } else {
       clearInterval(interval);
       countdownDiv.textContent = "";
-      // Capture photo (MIRRORED)
-      const ctx = photoCanvases2[captureIndex2].getContext('2d');
+      // Set canvas size
       photoCanvases2[captureIndex2].width = 871;
       photoCanvases2[captureIndex2].height = 859;
+      const ctx = photoCanvases2[captureIndex2].getContext('2d');
       ctx.save();
       ctx.translate(photoCanvases2[captureIndex2].width, 0);
       ctx.scale(-1, 1);
+      ctx.clearRect(0, 0, 871, 859);
       ctx.drawImage(video, 0, 0, 871, 859);
       ctx.restore();
+      // Move canvas to correct position
+      if (captureIndex2 === 0) {
+        photoCanvases2[captureIndex2].style.left = "66px";
+        photoCanvases2[captureIndex2].style.top = "77px";
+      } else if (captureIndex2 === 1) {
+        photoCanvases2[captureIndex2].style.left = "66px";
+        photoCanvases2[captureIndex2].style.top = "993px";
+      } else if (captureIndex2 === 2) {
+        photoCanvases2[captureIndex2].style.left = "66px";
+        photoCanvases2[captureIndex2].style.top = "1899px";
+      }
       captureIndex2++;
       setTimeout(captureNextPhoto2, 500); // Short pause before next photo
     }
