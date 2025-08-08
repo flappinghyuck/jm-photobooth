@@ -64,7 +64,23 @@
       width: 1000px;
       height: 3000px;
     }
+    #photostrip-container-2 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 1000px;
+      height: 3000px;
+    }
     #photostripImage {
+      width: 1000px;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+    #photostripImage2 {
       width: 1000px;
       height: auto;
       position: absolute;
@@ -126,11 +142,11 @@
       <canvas class="overlay-photo" id="photo3"></canvas>
       <img id="photostripImage" src="JaeminDay.png" alt="Photostrip layout" />
     </div>
-    <div id="photostrip-container-2">
-      <canvas class="overlay-photo" id="photo4"></canvas>
-      <canvas class="overlay-photo" id="photo5"></canvas>
-      <canvas class="overlay-photo" id="photo6"></canvas>
-      <img id="photostripImage2" src="JaeminDay2.png" alt="Photostrip layout 2" />
+    <div id="photostrip-container-2" style="position: relative; width: 1000px; height: 3000px;">
+  <canvas class="overlay-photo" id="photo4"></canvas>
+  <canvas class="overlay-photo" id="photo5"></canvas>
+  <canvas class="overlay-photo" id="photo6"></canvas>
+  <img id="photostripImage2" src="JaeminDay2.png" alt="Photostrip layout 2" style="position: absolute; top: 0; left: 0; width: 1000px; height: auto; z-index: 2;" />
     </div>
   </div>
   <canvas id="finalImage" style="display:none;"></canvas>
@@ -272,11 +288,16 @@ function captureNextPhoto2() {
   }, 1000);
 }
   function downloadPhotostrip2() {
-    const finalCanvas = document.getElementById('finalImage2');
-    const ctx = finalCanvas.getContext('2d');
+  const finalCanvas = document.getElementById('finalImage2');
+  const ctx = finalCanvas.getContext('2d');
 
-    finalCanvas.width = 1000;
-    finalCanvas.height = 3000;
+  finalCanvas.width = 1000;
+  finalCanvas.height = 3000;
+
+  const bgImage = new Image();
+  bgImage.crossOrigin = 'anonymous';
+  bgImage.onload = function () {
+    ctx.drawImage(bgImage, 0, 0, 1000, 3000);
 
     const photo4 = document.getElementById('photo4');
     const photo5 = document.getElementById('photo5');
@@ -286,19 +307,14 @@ function captureNextPhoto2() {
     ctx.drawImage(photo5, 66, 993);
     ctx.drawImage(photo6, 66, 1899);
 
-    const bgImage = new Image();
-    bgImage.crossOrigin = 'anonymous';
-    bgImage.onload = function () {
-      ctx.drawImage(bgImage, 0, 0, 1000, 3000);
-
-      const link = document.createElement('a');
-      link.download = 'JaeminDay_Photostrip2.png';
-      link.href = finalCanvas.toDataURL('image/png');
-      link.click();
-    };
-    const strip = document.getElementById('photostripImage2');
-    bgImage.src = strip.src;
-  }
+    const link = document.createElement('a');
+    link.download = 'JaeminDay_Photostrip2.png';
+    link.href = finalCanvas.toDataURL('image/png');
+    link.click();
+  };
+  const strip = document.getElementById('photostripImage2');
+  bgImage.src = strip.src;
+}
 </script>
 </body>
 </html>
