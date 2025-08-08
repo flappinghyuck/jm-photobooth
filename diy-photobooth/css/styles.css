@@ -1,0 +1,108 @@
+@font-face {
+  font-family: 'American Typewriter';
+  src: url('../fonts/AmericanTypewriter.ttf') format('truetype');
+  font-weight: bold;
+}
+
+body {
+  font-family: 'American Typewriter', sans-serif;
+  background: url('../images/BGJMDAY.png') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  font-family: 'American Typewriter';
+  font-size: 25em;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #814357;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 5em;
+  color: #814357;
+  margin-top: -80px;
+  margin-bottom: 50px;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+video {
+  background: #f7cfe3;
+  width: 2000px;
+  height: 2000px;
+  border-radius: 10px;
+  transform: scaleX(-1);
+}
+
+#controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#photostrip-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 1000px;
+  height: 3000px;
+}
+
+#photostripImage {
+  width: 1000px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.overlay-photo {
+  position: absolute;
+  width: 871px;
+  height: 859px;
+  z-index: 1;
+}
+
+#photo1 { left: 66px; top: 77px; height: 868px !important; }
+#photo2 { left: 66px; top: 993px; }
+#photo3 { left: 66px; top: 1899px; }
+
+button {
+  padding: 20px 40px;
+  font-size: 2.5em;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#countdown {
+  font-size: 5em;
+  margin: 10px;
+  color: #814357;
+}
+
+.footer {
+  font-size: 2em;
+  margin-top: 50px;
+  color: #814357;
+}

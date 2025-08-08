@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIY Photobooth - Happy Jaemin Day</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    @font-face {
+      font-family: 'American Typewriter';
+      src: url('fonts/AmericanTypewriter.ttf') format('truetype');
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">DIY Photobooth</div>
+  <div class="subtitle">Happy Jaemin Day</div>
+  <div class="container">
+    <div>
+      <video id="video" autoplay></video>
+      <div id="controls">
+        <button onclick="startCapture()">Start to capture Photostrip 1</button>
+        <button onclick="downloadPhotostrip()">Download Photostrip 1</button>
+        <button onclick="startCapture2()">Start to capture Photostrip 2</button>
+        <button onclick="downloadPhotostrip2()">Download Photostrip 2</button>
+        <div id="countdown"></div>
+      </div>
+    </div>
+    <div id="photostrip-container">
+      <canvas class="overlay-photo" id="photo1"></canvas>
+      <canvas class="overlay-photo" id="photo2"></canvas>
+      <canvas class="overlay-photo" id="photo3"></canvas>
+      <img id="photostripImage" src="images/JaeminDay.png" alt="Photostrip layout" />
+    </div>
+    <div id="photostrip-container-2">
+      <canvas class="overlay-photo" id="photo4"></canvas>
+      <canvas class="overlay-photo" id="photo5"></canvas>
+      <canvas class="overlay-photo" id="photo6"></canvas>
+      <img id="photostripImage2" src="images/JaeminDay2.png" alt="Photostrip layout 2" />
+    </div>
+  </div>
+  <canvas id="finalImage" style="display:none;"></canvas>
+  <canvas id="finalImage2" style="display:none;"></canvas>
+  <div class="footer">© flappinghyuck | Sweet Pages For Jaemin</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

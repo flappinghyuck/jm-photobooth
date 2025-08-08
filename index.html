@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIY Photobooth - Happy Jaemin Day</title>
+  <style>
+    @font-face {
+      font-family: 'American Typewriter';
+      src: url('AmericanTypewriter.ttf') format('truetype');
+      font-weight: bold;
+    }
+    body {
+      font-family: 'American Typewriter', sans-serif;
+      background: url('BGJMDAY.png') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .title {
+      text-align: center;
+      font-family: 'American Typewriter';
+      font-size: 25em;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #814357;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 5em;
+      color: #814357;
+      margin-top: -80px;
+      margin-bottom: 50px;
+    }
+    .container {
+      display: flex;
+      align-items: flex-start;
+      gap: 30px;
+    }
+    video {
+      background: #f7cfe3;
+      width: 2000px;
+      height: 2000px;
+      border-radius: 10px;
+      transform: scaleX(-1);
+    }
+    #controls {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    #photostrip-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 1000px;
+      height: 3000px;
+    }
+    #photostripImage {
+      width: 1000px;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+    .overlay-photo {
+      position: absolute;
+      width: 871px;
+      height: 859px;
+      z-index: 1;
+    }
+    #photo1 { left: 66px; top: 77px; height: 868px !important; }
+    #photo2 { left: 66px; top: 993px; }
+    #photo3 { left: 66px; top: 1899px; }
+
+    button {
+      padding: 20px 40px;
+      font-size: 2.5em;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    #countdown {
+      font-size: 5em;
+      margin: 10px;
+      color: #814357;
+    }
+    .footer {
+      font-size: 2em;
+      margin-top: 50px;
+      color: #814357;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">DIY Photobooth</div>
+  <div class="subtitle">Happy Jaemin Day</div>
+  <div class="container">
+    <div>
+      <video id="video" autoplay></video>
+      <div id="controls">
+        <button onclick="startCapture()">Start to capture Photostrip 1</button>
+        <button onclick="downloadPhotostrip()">Download Photostrip 1</button>
+        <button onclick="startCapture2()">Start to capture Photostrip 2</button>
+        <button onclick="downloadPhotostrip2()">Download Photostrip 2</button>
+        <div id="countdown"></div>
+      </div>
+    </div>
+    <div id="photostrip-container">
+      <canvas class="overlay-photo" id="photo1"></canvas>
+      <canvas class="overlay-photo" id="photo2"></canvas>
+      <canvas class="overlay-photo" id="photo3"></canvas>
+      <img id="photostripImage" src="JaeminDay.png" alt="Photostrip layout" />
+    </div>
+    <div id="photostrip-container-2">
+      <canvas class="overlay-photo" id="photo4"></canvas>
+      <canvas class="overlay-photo" id="photo5"></canvas>
+      <canvas class="overlay-photo" id="photo6"></canvas>
+      <img id="photostripImage2" src="JaeminDay2.png" alt="Photostrip layout 2" />
+    </div>
+  </div>
+  <canvas id="finalImage" style="display:none;"></canvas>
+  <canvas id="finalImage2" style="display:none;"></canvas>
+  <div class="footer">© flappinghyuck | Sweet Pages For Jaemin</div>
+
+<script>
+   // Camera preview setup
+  const video = document.getElementById('video');
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(function(err) {
+        alert('Could not access the camera: ' + err);
+      });
+  } else {
+    alert('getUserMedia is not supported in this browser.');
+  }
+let captureIndex = 0;
+const photoCanvases = [
+  document.getElementById('photo1'),
+  document.getElementById('photo2'),
+  document.getElementById('photo3')
+];
+const countdownDiv = document.getElementById('countdown');
+
+function startCapture() {
+  captureIndex = 0;
+  captureNextPhoto();
+}
+function captureNextPhoto() {
+  if (captureIndex >= photoCanvases.length) {
+    countdownDiv.textContent = "Done!";
+    return;
+  }
+  let countdown = 3;
+  countdownDiv.textContent = countdown;
+  const interval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      countdownDiv.textContent = countdown;
+    } else {
+      clearInterval(interval);
+      countdownDiv.textContent = "";
+      // Capture photo (MIRRORED)
+      const ctx = photoCanvases[captureIndex].getContext('2d');
+      photoCanvases[captureIndex].width = 871;
+      photoCanvases[captureIndex].height = 859;
+      ctx.save();
+      ctx.translate(photoCanvases[captureIndex].width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, 871, 859);
+      ctx.restore();
+      captureIndex++;
+      setTimeout(captureNextPhoto, 500); // Short pause before next photo
+    }
+  }, 1000);
+}
+  function downloadPhotostrip() {
+    const finalCanvas = document.getElementById('finalImage');
+    const ctx = finalCanvas.getContext('2d');
+
+    finalCanvas.width = 1000;
+    finalCanvas.height = 3000;
+
+    const photo1 = document.getElementById('photo1');
+    const photo2 = document.getElementById('photo2');
+    const photo3 = document.getElementById('photo3');
+
+    ctx.drawImage(photo1, 66, 77);
+    ctx.drawImage(photo2, 66, 993);
+    ctx.drawImage(photo3, 66, 1899);
+
+    const bgImage = new Image();
+    bgImage.crossOrigin = 'anonymous';
+    bgImage.onload = function () {
+      ctx.drawImage(bgImage, 0, 0, 1000, 3000);
+
+      const link = document.createElement('a');
+      link.download = 'JaeminDay_Photostrip.png';
+      link.href = finalCanvas.toDataURL('image/png');
+      link.click();
+    };
+    const strip = document.getElementById('photostripImage');
+    bgImage.src = strip.src;
+  }
+  let captureIndex2 = 0;
+const photoCanvases2 = [
+  document.getElementById('photo4'),
+  document.getElementById('photo5'),
+  document.getElementById('photo6')
+];
+
+function startCapture2() {
+  captureIndex2 = 0;
+  captureNextPhoto2();
+}
+function captureNextPhoto2() {
+  if (captureIndex2 >= photoCanvases2.length) {
+    countdownDiv.textContent = "Done!";
+    return;
+  }
+  let countdown = 3;
+  countdownDiv.textContent = countdown;
+  const interval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      countdownDiv.textContent = countdown;
+    } else {
+      clearInterval(interval);
+      countdownDiv.textContent = "";
+      // Capture photo (MIRRORED)
+      const ctx = photoCanvases2[captureIndex2].getContext('2d');
+      photoCanvases2[captureIndex2].width = 871;
+      photoCanvases2[captureIndex2].height = 859;
+      ctx.save();
+      ctx.translate(photoCanvases2[captureIndex2].width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, 871, 859);
+      ctx.restore();
+      captureIndex2++;
+      setTimeout(captureNextPhoto2, 500); // Short pause before next photo
+    }
+  }, 1000);
+}
+  function downloadPhotostrip2() {
+    const finalCanvas = document.getElementById('finalImage2');
+    const ctx = finalCanvas.getContext('2d');
+
+    finalCanvas.width = 1000;
+    finalCanvas.height = 3000;
+
+    const photo4 = document.getElementById('photo4');
+    const photo5 = document.getElementById('photo5');
+    const photo6 = document.getElementById('photo6');
+
+    ctx.drawImage(photo4, 66, 77);
+    ctx.drawImage(photo5, 66, 993);
+    ctx.drawImage(photo6, 66, 1899);
+
+    const bgImage = new Image();
+    bgImage.crossOrigin = 'anonymous';
+    bgImage.onload = function () {
+      ctx.drawImage(bgImage, 0, 0, 1000, 3000);
+
+      const link = document.createElement('a');
+      link.download = 'JaeminDay_Photostrip2.png';
+      link.href = finalCanvas.toDataURL('image/png');
+      link.click();
+    };
+    const strip = document.getElementById('photostripImage2');
+    bgImage.src = strip.src;
+  }
+</script>
+</body>
+</html>
