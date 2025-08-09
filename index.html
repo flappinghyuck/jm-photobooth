@@ -56,6 +56,12 @@
       align-items: center;
       gap: 20px;
     }
+    .button-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
     #photostrip-container {
       display: flex;
       flex-direction: column;
@@ -129,10 +135,14 @@
     <div>
       <video id="video" autoplay></video>
       <div id="controls">
-        <button onclick="startCapture()">Start to capture Photostrip 1</button>
-        <button onclick="downloadPhotostrip()">Download Photostrip 1</button>
-        <button onclick="startCapture2()">Start to capture Photostrip 2</button>
-        <button onclick="downloadPhotostrip2()">Download Photostrip 2</button>
+        <div class="button-row">
+          <button onclick="startCapture()">Start to capture Photostrip 1</button>
+          <button onclick="downloadPhotostrip()">Download Photostrip 1</button>
+        </div>
+        <div class="button-row">
+          <button onclick="startCapture2()">Start to capture Photostrip 2</button>
+          <button onclick="downloadPhotostrip2()">Download Photostrip 2</button>
+        </div>
         <div id="countdown"></div>
       </div>
     </div>
@@ -143,10 +153,10 @@
       <img id="photostripImage" src="JaeminDay.png" alt="Photostrip layout" />
     </div>
     <div id="photostrip-container-2" style="position: relative; width: 1000px; height: 3000px;">
-  <canvas class="overlay-photo" id="photo4"></canvas>
-  <canvas class="overlay-photo" id="photo5"></canvas>
-  <canvas class="overlay-photo" id="photo6"></canvas>
-  <img id="photostripImage2" src="JaeminDay2.png" alt="Photostrip layout 2" style="position: absolute; top: 0; left: 0; width: 1000px; height: auto; z-index: 2;" />
+      <canvas class="overlay-photo" id="photo4"></canvas>
+      <canvas class="overlay-photo" id="photo5"></canvas>
+      <canvas class="overlay-photo" id="photo6"></canvas>
+      <img id="photostripImage2" src="JaeminDay2.png" alt="Photostrip layout 2" style="position: absolute; top: 0; left: 0; width: 1000px; height: auto; z-index: 2;" />
     </div>
   </div>
   <canvas id="finalImage" style="display:none;"></canvas>
