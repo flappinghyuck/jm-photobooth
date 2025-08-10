@@ -48,7 +48,7 @@
       height: 859px;
       border-radius: 10px;
       transform: scaleX(-1);
-      object-fit: contain; /* Shows entire camera frame, may add letterboxing */
+      object-fit: contain;
       display: block;
     }
     #controls {
@@ -64,14 +64,7 @@
       margin-bottom: 10px;
       justify-content: center;
     }
-    #photostrip-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      width: 500px;
-      height: 1500px;
-    }
+    #photostrip-container,
     #photostrip-container-2 {
       display: flex;
       flex-direction: column;
@@ -80,14 +73,7 @@
       width: 500px;
       height: 1500px;
     }
-    #photostripImage {
-      width: 500px;
-      height: auto;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 2;
-    }
+    #photostripImage,
     #photostripImage2 {
       width: 500px;
       height: auto;
@@ -102,12 +88,9 @@
       height: 429.5px;
       z-index: 1;
     }
-    #photo1 { left: 33px; top: 38.5px; height: 434px !important; }
-    #photo2 { left: 33px; top: 496.5px; }
-    #photo3 { left: 33px; top: 950px; }
-    #photo4 { left: 33px; top: 38.5px; height: 434px !important; }
-    #photo5 { left: 33px; top: 496.5px; }
-    #photo6 { left: 33px; top: 951.5px; }
+    #photo1, #photo4 { left: 33px; top: 38.5px; height: 434px !important; }
+    #photo2, #photo5 { left: 33px; top: 496.5px; height: 429.5px; }
+    #photo3, #photo6 { left: 33px; top: 950px; height: 429.5px; }
 
     button {
       padding: 15px 30px;
@@ -166,7 +149,6 @@
   <div class="footer">© flappinghyuck | Sweet Pages For Jaemin</div>
 
 <script>
-   // Camera preview setup
   const video = document.getElementById('video');
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -188,7 +170,7 @@ const photoCanvases = [
 ];
 const countdownDiv = document.getElementById('countdown');
 
-// Halved canvas dimensions
+// Canvas dimensions
 const canvasW = 435.5;
 const canvasH = 429.5;
 
@@ -210,7 +192,6 @@ function captureNextPhoto() {
     } else {
       clearInterval(interval);
       countdownDiv.textContent = "";
-      // Capture photo (MIRRORED)
       const ctx = photoCanvases[captureIndex].getContext('2d');
       photoCanvases[captureIndex].width = canvasW;
       photoCanvases[captureIndex].height = canvasH;
@@ -220,39 +201,39 @@ function captureNextPhoto() {
       ctx.drawImage(video, 0, 0, canvasW, canvasH);
       ctx.restore();
       captureIndex++;
-      setTimeout(captureNextPhoto, 500); // Short pause before next photo
+      setTimeout(captureNextPhoto, 500);
     }
   }, 1000);
 }
-  function downloadPhotostrip() {
-    const finalCanvas = document.getElementById('finalImage');
-    const ctx = finalCanvas.getContext('2d');
+function downloadPhotostrip() {
+  const finalCanvas = document.getElementById('finalImage');
+  const ctx = finalCanvas.getContext('2d');
 
-    finalCanvas.width = 500;
-    finalCanvas.height = 1500;
+  finalCanvas.width = 500;
+  finalCanvas.height = 1500;
 
-    const photo1 = document.getElementById('photo1');
-    const photo2 = document.getElementById('photo2');
-    const photo3 = document.getElementById('photo3');
+  const photo1 = document.getElementById('photo1');
+  const photo2 = document.getElementById('photo2');
+  const photo3 = document.getElementById('photo3');
 
-    ctx.drawImage(photo1, 33, 38.5);
-    ctx.drawImage(photo2, 33, 496.5);
-    ctx.drawImage(photo3, 33, 950);
+  ctx.drawImage(photo1, 33, 38.5);
+  ctx.drawImage(photo2, 33, 496.5);
+  ctx.drawImage(photo3, 33, 950);
 
-    const bgImage = new Image();
-    bgImage.crossOrigin = 'anonymous';
-    bgImage.onload = function () {
-      ctx.drawImage(bgImage, 0, 0, 500, 1500);
+  const bgImage = new Image();
+  bgImage.crossOrigin = 'anonymous';
+  bgImage.onload = function () {
+    ctx.drawImage(bgImage, 0, 0, 500, 1500);
 
-      const link = document.createElement('a');
-      link.download = 'JaeminDay_Photostrip.png';
-      link.href = finalCanvas.toDataURL('image/png');
-      link.click();
-    };
-    const strip = document.getElementById('photostripImage');
-    bgImage.src = strip.src;
-  }
-  let captureIndex2 = 0;
+    const link = document.createElement('a');
+    link.download = 'JaeminDay_Photostrip.png';
+    link.href = finalCanvas.toDataURL('image/png');
+    link.click();
+  };
+  const strip = document.getElementById('photostripImage');
+  bgImage.src = strip.src;
+}
+let captureIndex2 = 0;
 const photoCanvases2 = [
   document.getElementById('photo4'),
   document.getElementById('photo5'),
@@ -277,7 +258,6 @@ function captureNextPhoto2() {
     } else {
       clearInterval(interval);
       countdownDiv.textContent = "";
-      // Set canvas size
       photoCanvases2[captureIndex2].width = canvasW;
       photoCanvases2[captureIndex2].height = canvasH;
       const ctx = photoCanvases2[captureIndex2].getContext('2d');
@@ -287,7 +267,6 @@ function captureNextPhoto2() {
       ctx.clearRect(0, 0, canvasW, canvasH);
       ctx.drawImage(video, 0, 0, canvasW, canvasH);
       ctx.restore();
-      // Move canvas to correct position
       if (captureIndex2 === 0) {
         photoCanvases2[captureIndex2].style.left = "33px";
         photoCanvases2[captureIndex2].style.top = "38.5px";
@@ -296,14 +275,14 @@ function captureNextPhoto2() {
         photoCanvases2[captureIndex2].style.top = "496.5px";
       } else if (captureIndex2 === 2) {
         photoCanvases2[captureIndex2].style.left = "33px";
-        photoCanvases2[captureIndex2].style.top = "951.5px";
+        photoCanvases2[captureIndex2].style.top = "950px";
       }
       captureIndex2++;
-      setTimeout(captureNextPhoto2, 500); // Short pause before next photo
+      setTimeout(captureNextPhoto2, 500);
     }
   }, 1000);
 }
-  function downloadPhotostrip2() {
+function downloadPhotostrip2() {
   const finalCanvas = document.getElementById('finalImage2');
   const ctx = finalCanvas.getContext('2d');
 
@@ -316,7 +295,7 @@ function captureNextPhoto2() {
 
   ctx.drawImage(photo4, 33, 38.5);
   ctx.drawImage(photo5, 33, 496.5);
-  ctx.drawImage(photo6, 33, 951.5);
+  ctx.drawImage(photo6, 33, 950);
 
   const bgImage = new Image();
   bgImage.crossOrigin = 'anonymous';
