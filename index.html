@@ -111,6 +111,44 @@
       margin-top: 25px;
       color: #814357;
     }
+    .hashtags {
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: #814357;
+      text-align: center;
+      font-weight: bold;
+    }
+    .reminders {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #d9534f;
+      background: #fff6f6;
+      padding: 8px 16px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #ffdada;
+    }
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      video, #photostrip-container, #photostrip-container-2 {
+        width: 95vw;
+        height: auto;
+        max-width: 100%;
+      }
+      .title {
+        font-size: 3em;
+      }
+      .subtitle {
+        font-size: 1.2em;
+      }
+      button {
+        font-size: 1em;
+        padding: 10px 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -129,6 +167,12 @@
           <button onclick="downloadPhotostrip2()">Download Photostrip 2</button>
         </div>
         <div id="countdown"></div>
+        <div class="hashtags">
+          Use hashtags #0813JaeminDay #HBDJaemin #재민데이 ##Forever25hiningJAEMIN ##공주님_왕자님들_재민이_생일이에용
+        </div>
+        <div class="reminders">
+          Reminder: Please allow camera access and take your photos in a well-lit area for best results!
+        </div>
       </div>
     </div>
     <div id="photostrip-container">
